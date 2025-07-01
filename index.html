@@ -21,10 +21,16 @@
       border: 1.6px solid var(--tiffany);
     }
     .menu-img {
-      width: 82px; height: 82px; border-radius: 15px; object-fit: cover;
-      background: #203232; margin-right: 16px; flex-shrink: 0;
-      border: 2px solid var(--tiffany-light);
-      box-shadow:0 1px 9px #54cdc455;
+      width: 80px;      /* 或 72px, 84px，根据你喜欢 */
+      height: 80px;     /* 保持比例，推荐正方形 */
+      border-radius: 14px;
+      object-fit: cover;
+      background: #203232;
+      margin-right: 18px;
+      flex-shrink: 0;
+      border: 2.2px solid var(--tiffany-light);
+      box-shadow: 0 1px 9px #54cdc455;
+      transition: box-shadow .2s;
     }
     .menu-info { flex:1; min-width:0; }
     .menu-name { font-size:1.15em; font-weight:600; margin-bottom:2px; display:flex; align-items:center;}
