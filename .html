@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>JGH-Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <style>
+    :root {
+      --tiffany: #81D8D0;
+      --tiffany-dark: #5ccfc5;
+      --tiffany-light: #adf2ed;
+    }
+    body { background: #162222; color: #fff; font-family: 'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; margin:0;}
+    .menu-wrap { max-width: 520px; margin:0 auto; padding:16px 0 70px 0;}
+    .menu-item {
+      display: flex; align-items: flex-start;
+      background: #21312e; border-radius: 15px;
+      box-shadow: 0 3px 18px #5dc4b11b;
+      margin:0 13px 18px 13px; padding:11px 9px;
+      transition:.18s;
+      border: 1.6px solid var(--tiffany);
+    }
+    .menu-img {
+      width: 82px; height: 82px; border-radius: 15px; object-fit: cover;
+      background: #203232; margin-right: 16px; flex-shrink: 0;
+      border: 2px solid var(--tiffany-light);
+      box-shadow:0 1px 9px #54cdc455;
+    }
+    .menu-info { flex:1; min-width:0; }
+    .menu-name { font-size:1.15em; font-weight:600; margin-bottom:2px; display:flex; align-items:center;}
+    .menu-badge { display:inline-block; background: linear-gradient(90deg, var(--tiffany), var(--tiffany-light)); color:#146; border-radius:10px; font-size:0.85em; font-weight:600; padding:2px 8px; margin-left:7px; margin-right:3px; box-shadow:0 1px 5px #81d8d044;}
+    .menu-type { display:inline-block; background:var(--tiffany-dark); color:#146; font-size:0.83em; border-radius:8px; padding:2px 8px; margin-left:7px;}
+    .menu-title { color:var(--tiffany); font-size:.97em; margin-bottom:1px; margin-right:5px;}
+    .menu-thccbd { color:var(--tiffany-light); font-size:0.98em; font-weight:500; margin-bottom:2px; margin-right:10px;}
+    .menu-specs { margin:5px 0 0 0; display: flex; gap:10px; flex-wrap:wrap;}
+    .menu-spec { background:var(--tiffany-dark); color:#155; font-size:1.01em; border-radius:8px; padding:2.5px 10px; margin-right:2px; display:inline-block; box-shadow:0 1px 6px #81d8d055;}
+    .menu-price { color: var(--tiffany); font-weight:700; font-size:1.09em; margin-left:4px;}
+    .menu-desc { font-size:.97em; color:#c9fffa; margin:7px 0 0 0; line-height:1.5;}
+    @media (max-width:600px) {
+      .menu-wrap { padding:7px 0 65px 0;}
+      .menu-item { margin:0 3vw 15px 3vw; padding:8px 5px; }
+      .menu-img { width:65px; height:65px; margin-right:10px;}
+      .menu-name { font-size:1em;}
+      .menu-type, .menu-badge { font-size:.83em;}
+    }
+    @media (max-width:390px){
+      .menu-item { flex-direction: column; align-items: stretch;}
+      .menu-img { margin: 0 0 9px 0; }
+    }
+    .footer { position:fixed; left:0; bottom:0; width:100vw; color:var(--tiffany); background:#162222; font-size:.99em; text-align:center; padding:12px 0 9px 0; z-index:22; border-top: 1.5px solid var(--tiffany-dark);}
+    a { color:var(--tiffany); }
+  </style>
+</head>
+<body>
+  <div class="menu-wrap" id="menu"></div>
+  <div class="footer">
+    JustGetHigh &copy; Menu | <a href="https://t.me/batman1788" target="_blank">Telegram-Order</a>
+  </div>
+  <script>
+    // 替换为你的 Sheet ID 和 tab
+    const SHEET_ID = "1_vY7Cu22ZjBjTH8aS9Fze3_TN7HCkHUm012YtSZWrys";
+    const SHEET_TAB = "beanmenu";
+    const SHEET_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_TAB}`;
+
+    fetch(SHEET_URL)
+      .then(res=>res.json())
+      .then(rows=>{
+        const html = rows.map(obj=>{
+          let specs = '';
+          for(let i=1;i<=3;i++){
+            if(obj['spec'+i] && obj['price'+i]){
+              specs += `<span class="menu-spec">${obj['spec'+i]}<span class="menu-price">${obj['price'+i]}</span></span>`;
+            }
+          }
+          let thccbd = obj.thccbd || '';
+          if(!thccbd && (obj.thc || obj.cbd)) {
+            thccbd = (obj.thc ? obj.thc : '') + (obj.cbd ? (' / ' + obj.cbd) : '');
+          }
+          return `
+            <div class="menu-item">
+              ${obj.img ? `<img class="menu-img" src="${obj.img}" loading="lazy"/>` : ""}
+              <div class="menu-info">
+                <div class="menu-name">
+                  ${obj.name || ""}
+                  ${obj.badge ? `<span class="menu-badge">${obj.badge}</span>` : ""}
+                  ${obj.type ? `<span class="menu-type">${obj.type}</span>` : ""}
+                </div>
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:2px;">
+                  ${obj.title ? `<span class="menu-title">${obj.title}</span>` : ""}
+                  ${thccbd ? `<span class="menu-thccbd">THC/CBD: ${thccbd}</span>` : ""}
+                </div>
+                <div class="menu-specs">${specs}</div>
+                ${obj.desc ? `<div class="menu-desc">${obj.desc}</div>` : ""}
+              </div>
+            </div>
+          `;
+        }).join('');
+        document.getElementById('menu').innerHTML = html || `<div style="text-align:center;color:#ccc;margin-top:40px;">暂无菜单内容</div>`;
+      })
+      .catch(err=>{
+        document.getElementById('menu').innerHTML = "<div style='text-align:center;color:var(--tiffany);margin-top:36vw;font-size:1.08em;'>菜单加载失败，请刷新重试。</div>";
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
