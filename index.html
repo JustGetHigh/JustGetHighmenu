@@ -49,6 +49,24 @@
       color:#fff; font-size:2.1em; opacity:0.7; cursor:pointer;
       z-index:99;
     }
+    .logo-bar {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 12px auto;
+      padding: 16px 0 0 0;
+    }
+    .logo-bar img {
+      max-width: 160px;
+      height: auto;
+      border-radius: 18px;
+      box-shadow: 0 2px 14px #203b3c40;
+      background: rgba(255,255,255,0.03);
+    }
+    @media (max-width: 400px) {
+      .logo-bar img { max-width: 75vw; }
+    }
     /* 名称行优化 */
     .menu-name-row {
       display: flex;
@@ -115,6 +133,9 @@
   </style>
 </head>
 <body>
+  <div class="logo-bar">
+    <img src="https://raw.githubusercontent.com/JustGetHigh/JustGetHighmenu/main/jghlogo.jpg" alt="JustGetHigh" />
+  </div>
   <div class="menu-wrap" id="menu"></div>
   <div class="footer">
     JustGetHigh &copy; Menu | <a href="https://t.me/J420GH78" target="_blank">Telegram-Order</a>
