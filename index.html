@@ -13,13 +13,21 @@
     body { background: linear-gradient(135deg, #173a3a 0%, #273c42 100%); color: #fff; font-family: 'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; margin:0;}
     .menu-wrap { max-width: 520px; margin:0 auto; padding:18px 0 75px 0;}
     .menu-item {
-      background: #21312e; border-radius: 15px;
+      background:
+        linear-gradient(135deg, rgba(33,49,46,0.93), rgba(33,49,46,0.97)),
+        url('https://raw.githubusercontent.com/JustGetHigh/JustGetHighmenu/main/jghlogo.jpg');
+      background-size: cover;
+      background-position: center;
+      border-radius: 15px;
       box-shadow: 0 3px 18px #5dc4b11b;
-      margin:0 13px 22px 13px; padding:15px 10px 13px 10px;
-      transition:.18s;
-      border: 1.7px solid var(--tiffany);
+      margin: 0 13px 18px 13px;
+      padding: 11px 9px;
+      transition: .18s;
+      border: 1.6px solid var(--tiffany);
       text-align: center;
-      display: flex; flex-direction: column; align-items: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .menu-img {
       width: 105px;
