@@ -16,7 +16,7 @@
     body { background: #162222; color: #fff; font-family: 'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; margin:0;}
     .menu-wrap { max-width: 520px; margin:0 auto; padding:16px 0 70px 0;}
     .menu-item {
-      display: flex; align-items: flex-start; flex-direction: column;
+      display: flex; flex-direction: column; align-items: center;
       background: #21312e; border-radius: 15px;
       box-shadow: 0 3px 18px #5dc4b11b;
       margin:0 13px 18px 13px; padding:14px 11px 15px 11px;
@@ -49,16 +49,20 @@
       color:#fff; font-size:2.1em; opacity:0.7; cursor:pointer;
       z-index:99;
     }
-    /* 名称行布局 */
+    /* 名称行优化 */
     .menu-name-row {
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 3px;
       gap: 12px;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
     }
     .menu-badge, .menu-type {
       min-width: 54px;
+      max-width: 72px;
       text-align: center;
       display: inline-block;
       font-size: 0.86em;
@@ -67,16 +71,17 @@
       font-weight: 600;
       box-shadow: 0 1px 5px #81d8d044;
       line-height: 1.6;
-      /* visibility: hidden; 会让布局抖动, 用 &nbsp; 占位*/
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+      opacity: 1;
+      transition: opacity .12s;
     }
-    .menu-badge {
-      background: var(--badge-bg);
-      color: #fff;
-    }
-    .menu-type {
-      background: var(--type-bg);
-      color: var(--type-color);
-    }
+    .menu-badge { background: var(--badge-bg); color: #fff;}
+    .menu-type { background: var(--type-bg); color: var(--type-color);}
+    .menu-badge:empty,
+    .menu-type:empty { opacity:0; pointer-events: none;}
     .menu-name-main {
       font-size: 1.13em;
       font-weight: bold;
@@ -84,8 +89,12 @@
       text-align: center;
       padding: 0 10px;
       letter-spacing: 1px;
-      flex: 1 0 auto;
-      min-width: 84px;
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
     }
     .menu-title { color:var(--tiffany); font-size:.97em; margin-bottom:1px; margin-right:5px;}
     .menu-thccbd { color:var(--tiffany-light); font-size:0.98em; font-weight:500; margin-bottom:2px; margin-right:10px;}
@@ -99,6 +108,7 @@
       .menu-img { width:65px; height:65px; }
       .menu-name-main { font-size:1em; }
       .menu-type, .menu-badge { font-size:.83em;}
+      .menu-name-row { gap: 7px;}
     }
     .footer { position:fixed; left:0; bottom:0; width:100vw; color:var(--tiffany); background:#162222; font-size:.99em; text-align:center; padding:12px 0 9px 0; z-index:22; border-top: 1.5px solid var(--tiffany-dark);}
     a { color:var(--tiffany); }
@@ -107,7 +117,7 @@
 <body>
   <div class="menu-wrap" id="menu"></div>
   <div class="footer">
-    JustGetHigh &copy; Menu | <a href="https://t.me/batman1788" target="_blank">Telegram-Order</a>
+    JustGetHigh &copy; Menu | <a href="https://t.me/J420GH78" target="_blank">Telegram-Order</a>
   </div>
   <!-- 图片放大弹窗 -->
   <div class="img-zoom-modal" id="zoomModal" onclick="this.classList.remove('active')">
@@ -132,14 +142,13 @@
           if(!thccbd && (obj.thc || obj.cbd)) {
             thccbd = (obj.thc ? obj.thc : '') + (obj.cbd ? (' / ' + obj.cbd) : '');
           }
-          // 三列名行
           return `
             <div class="menu-item">
               ${obj.img ? `<img class="menu-img" src="${obj.img}" loading="lazy" onclick="zoomImg(this.src)"/>` : ""}
               <div class="menu-name-row">
-                <span class="menu-badge">${obj.badge || "&nbsp;"}</span>
-                <span class="menu-name-main">${obj.name || ""}</span>
-                <span class="menu-type">${obj.type || "&nbsp;"}</span>
+                <span class="menu-badge">${obj.badge ? obj.badge : ""}</span>
+                <span class="menu-name-main" title="${obj.name||""}">${obj.name || ""}</span>
+                <span class="menu-type">${obj.type ? obj.type : ""}</span>
               </div>
               <div style="display:flex;align-items:center;gap:9px;margin-bottom:2px;">
                 ${obj.title ? `<span class="menu-title">${obj.title}</span>` : ""}
