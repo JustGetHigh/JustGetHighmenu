@@ -9,57 +9,99 @@
       --tiffany: #81D8D0;
       --tiffany-dark: #5ccfc5;
       --tiffany-light: #adf2ed;
+      --badge-bg: linear-gradient(90deg,#ff6b21,#fcb900);
+      --type-bg: #2ac8c8;
+      --type-color: #fff;
     }
-    body { background: linear-gradient(135deg, #173a3a 0%, #273c42 100%); color: #fff; font-family: 'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; margin:0;}
-    .menu-wrap { max-width: 520px; margin:0 auto; padding:18px 0 75px 0;}
+    body { background: #162222; color: #fff; font-family: 'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif; margin:0;}
+    .menu-wrap { max-width: 520px; margin:0 auto; padding:16px 0 70px 0;}
     .menu-item {
-      background:
-        linear-gradient(135deg, rgba(33,49,46,0.45), rgba(33,49,46,0.62)),
-        url('https://raw.githubusercontent.com/JustGetHigh/JustGetHighmenu/main/jghlogo.jpg');
-      background-size: cover;
-      background-position: center;
-      border-radius: 15px;
+      display: flex; align-items: flex-start; flex-direction: column;
+      background: #21312e; border-radius: 15px;
       box-shadow: 0 3px 18px #5dc4b11b;
-      margin: 0 13px 18px 13px;
-      padding: 11px 9px;
-      transition: .18s;
+      margin:0 13px 18px 13px; padding:14px 11px 15px 11px;
       border: 1.6px solid var(--tiffany);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative;
     }
     .menu-img {
-      width: 105px;
-      height: 105px;
-      border-radius: 16px;
+      width: 86px; height: 86px;
+      border-radius: 13px;
       object-fit: cover;
       background: #203232;
-      border: 2px solid var(--tiffany-light);
-      box-shadow: 0 1px 10px #54cdc455;
-      margin-bottom: 12px;
-      transition: box-shadow .18s;
+      margin: 0 auto 12px auto;
+      display: block;
+      border: 2.2px solid var(--tiffany-light);
+      box-shadow: 0 1px 10px #54cdc433;
       cursor: pointer;
+      transition: box-shadow .2s;
     }
-    .menu-info { width: 100%; min-width:0; text-align: left;}
-    .menu-name { font-size:1.15em; font-weight:600; margin-bottom:3px; display:flex; align-items:center;}
-    .menu-badge { display:inline-block; background: linear-gradient(90deg, var(--tiffany), var(--tiffany-light)); color:#146; border-radius:9px; font-size:0.88em; font-weight:600; padding:2px 8px; margin-left:7px; margin-right:3px; box-shadow:0 1px 5px #81d8d044;}
-    .menu-type { display:inline-block; background:var(--tiffany-dark); color:#146; font-size:0.82em; border-radius:8px; padding:2px 8px; margin-left:7px;}
-    .menu-title { color:var(--tiffany); font-size:.98em; margin-bottom:1px; margin-right:6px;}
+    /* 放大图片遮罩 */
+    .img-zoom-modal {
+      display: none; position: fixed; z-index: 10001; left:0;top:0;right:0;bottom:0;
+      background: rgba(10,25,30,0.91);
+      justify-content: center; align-items: center;
+    }
+    .img-zoom-modal.active { display: flex;}
+    .img-zoom-modal img { max-width:90vw; max-height:82vh; border-radius:18px; box-shadow:0 3px 26px #000b;}
+    .img-zoom-modal:after {
+      content: "✕";
+      position: absolute; top:18px; right:24px;
+      color:#fff; font-size:2.1em; opacity:0.7; cursor:pointer;
+      z-index:99;
+    }
+    /* 名称行布局 */
+    .menu-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3px;
+      gap: 12px;
+    }
+    .menu-badge, .menu-type {
+      min-width: 54px;
+      text-align: center;
+      display: inline-block;
+      font-size: 0.86em;
+      border-radius: 10px;
+      padding: 2.5px 8px 2.5px 8px;
+      font-weight: 600;
+      box-shadow: 0 1px 5px #81d8d044;
+      line-height: 1.6;
+      /* visibility: hidden; 会让布局抖动, 用 &nbsp; 占位*/
+    }
+    .menu-badge {
+      background: var(--badge-bg);
+      color: #fff;
+    }
+    .menu-type {
+      background: var(--type-bg);
+      color: var(--type-color);
+    }
+    .menu-name-main {
+      font-size: 1.13em;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      padding: 0 10px;
+      letter-spacing: 1px;
+      flex: 1 0 auto;
+      min-width: 84px;
+    }
+    .menu-title { color:var(--tiffany); font-size:.97em; margin-bottom:1px; margin-right:5px;}
     .menu-thccbd { color:var(--tiffany-light); font-size:0.98em; font-weight:500; margin-bottom:2px; margin-right:10px;}
-    .menu-specs { margin:7px 0 0 0; display: flex; gap:9px; flex-wrap:wrap;}
-    .menu-spec {background: rgba(20,42,40,0.92);color: #fff;font-size: 0.98em;border-radius: 9px;padding: 3px 9px;margin-right: 3px;display: inline-block;box-shadow: 0 2px 7px #0003;font-weight: 500;}
-    .menu-price {color: #81d8d0;font-weight: 700;font-size: 1em;margin-left: 6px;text-shadow: 0 1px 4px #12413a60;}
-    .menu-desc { font-size:.98em; color:#c9fffa; margin:7px 0 0 0; line-height:1.55;}
+    .menu-specs { margin:5px 0 0 0; display: flex; gap:10px; flex-wrap:wrap; justify-content: flex-start;}
+    .menu-spec { background:var(--tiffany-dark); color:#155; font-size:1em; border-radius:8px; padding:2.5px 10px; margin-right:2px; display:inline-block; box-shadow:0 1px 6px #81d8d055;}
+    .menu-price { color: var(--tiffany); font-weight:700; font-size:1.06em; margin-left:4px;}
+    .menu-desc { font-size:.97em; color:#c9fffa; margin:7px 0 0 0; line-height:1.48;}
+    @media (max-width:600px) {
+      .menu-wrap { padding:7px 0 65px 0;}
+      .menu-item { margin:0 2vw 14px 2vw; padding:9px 4px 11px 4px; }
+      .menu-img { width:65px; height:65px; }
+      .menu-name-main { font-size:1em; }
+      .menu-type, .menu-badge { font-size:.83em;}
+    }
     .footer { position:fixed; left:0; bottom:0; width:100vw; color:var(--tiffany); background:#162222; font-size:.99em; text-align:center; padding:12px 0 9px 0; z-index:22; border-top: 1.5px solid var(--tiffany-dark);}
     a { color:var(--tiffany); }
-    @media (max-width:600px){
-      .menu-wrap{padding-bottom:64px;}
-      .menu-item{margin:0 2vw 18px 2vw;}
-      .menu-img{width:84px;height:84px;}
-      .menu-info{font-size:0.99em;}
-      .menu-name{font-size:1em;}
-    }
   </style>
 </head>
 <body>
@@ -67,12 +109,15 @@
   <div class="footer">
     JustGetHigh &copy; Menu | <a href="https://t.me/batman1788" target="_blank">Telegram-Order</a>
   </div>
+  <!-- 图片放大弹窗 -->
+  <div class="img-zoom-modal" id="zoomModal" onclick="this.classList.remove('active')">
+    <img id="zoomedImg" src="" alt="zoom"/>
+  </div>
   <script>
-    // 替换为你的 Sheet ID 和 tab
+    // 用 opensheet.elk.sh 读取 Google Sheet
     const SHEET_ID = "1_vY7Cu22ZjBjTH8aS9Fze3_TN7HCkHUm012YtSZWrys";
     const SHEET_TAB = "beanmenu";
     const SHEET_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_TAB}`;
-
     fetch(SHEET_URL)
       .then(res=>res.json())
       .then(rows=>{
@@ -87,22 +132,21 @@
           if(!thccbd && (obj.thc || obj.cbd)) {
             thccbd = (obj.thc ? obj.thc : '') + (obj.cbd ? (' / ' + obj.cbd) : '');
           }
+          // 三列名行
           return `
             <div class="menu-item">
-              ${obj.img ? `<img class="menu-img" src="${obj.img}" loading="lazy" onclick="showImg(this.src)"/>` : ""}
-              <div class="menu-info">
-                <div class="menu-name">
-                  ${obj.name || ""}
-                  ${obj.badge ? `<span class="menu-badge">${obj.badge}</span>` : ""}
-                  ${obj.type ? `<span class="menu-type">${obj.type}</span>` : ""}
-                </div>
-                <div style="display:flex;align-items:center;gap:9px;margin-bottom:2px;">
-                  ${obj.title ? `<span class="menu-title">${obj.title}</span>` : ""}
-                  ${thccbd ? `<span class="menu-thccbd">THC/CBD: ${thccbd}</span>` : ""}
-                </div>
-                <div class="menu-specs">${specs}</div>
-                ${obj.desc ? `<div class="menu-desc">${obj.desc}</div>` : ""}
+              ${obj.img ? `<img class="menu-img" src="${obj.img}" loading="lazy" onclick="zoomImg(this.src)"/>` : ""}
+              <div class="menu-name-row">
+                <span class="menu-badge">${obj.badge || "&nbsp;"}</span>
+                <span class="menu-name-main">${obj.name || ""}</span>
+                <span class="menu-type">${obj.type || "&nbsp;"}</span>
               </div>
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:2px;">
+                ${obj.title ? `<span class="menu-title">${obj.title}</span>` : ""}
+                ${thccbd ? `<span class="menu-thccbd">THC/CBD: ${thccbd}</span>` : ""}
+              </div>
+              <div class="menu-specs">${specs}</div>
+              ${obj.desc ? `<div class="menu-desc">${obj.desc}</div>` : ""}
             </div>
           `;
         }).join('');
@@ -113,20 +157,16 @@
         console.error(err);
       });
 
-    // 放大图片弹窗
-    function showImg(src) {
-      const overlay = document.createElement("div");
-      overlay.style = `
-        position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:9999;
-        background:rgba(16,26,32,0.91);display:flex;align-items:center;justify-content:center;`;
-      overlay.onclick = ()=>document.body.removeChild(overlay);
-      const img = document.createElement("img");
-      img.src = src;
-      img.style = "max-width:90vw;max-height:82vh;border-radius:14px;box-shadow:0 5px 60px #81d8d0b5; border:4px solid #fff;";
-      overlay.appendChild(img);
-      document.body.appendChild(overlay);
+    // 图片放大功能
+    function zoomImg(src) {
+      const modal = document.getElementById('zoomModal');
+      document.getElementById('zoomedImg').src = src;
+      modal.classList.add('active');
     }
-    window.showImg = showImg;
+    // 关闭弹窗（点黑色遮罩即可）
+    document.getElementById('zoomModal').onclick = function(e) {
+      if(e.target === this) this.classList.remove('active');
+    };
   </script>
 </body>
 </html>
