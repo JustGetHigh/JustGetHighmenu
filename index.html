@@ -160,6 +160,27 @@
     const SHEET_ID = "1_vY7Cu22ZjBjTH8aS9Fze3_TN7HCkHUm012YtSZWrys";
     const SHEET_TAB = "jghmenu";
     const SHEET_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_TAB}`;
+    // 广告 banner 的表
+    const SHEET_AD_TAB = "jghad";
+    const SHEET_AD_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_AD_TAB}`;
+
+    fetch(SHEET_AD_URL)
+      .then(res => res.json())
+      .then(rows => {
+        if (!rows || !rows.length) return;
+        const r = rows[0] || {};
+        const enabled = String(r.enabled || '').trim().toLowerCase() === 'yes';
+        const adImg = (r.img || '').trim();
+        if (!enabled || !adImg) return;
+
+        const modal = document.getElementById('adModal');
+        const imgEl = document.getElementById('adImg');
+        if (!modal || !imgEl) return;
+
+        imgEl.src = adImg;
+        modal.classList.remove('hidden');  // 显示弹窗
+      })
+      .catch(err => console.error('广告加载失败:', err));
     fetch(SHEET_URL)
       .then(res=>res.json())
       .then(rows=>{
@@ -209,5 +230,97 @@
       if(e.target === this) this.classList.remove('active');
     };
   </script>
+  <!-- 🔽 广告弹窗（放在 </body> 之前）🔽 -->
+<div class="ad-modal-bg hidden" id="adModal">
+  <div class="ad-modal">
+    <img id="adImg" src="" alt="Promo" />
+    <button class="ad-close" type="button" onclick="window.closeAd()">×</button>
+  </div>
+</div>
+
+<style>
+  /* 广告弹窗样式 */
+  .ad-modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.78);
+    display: flex;              /* 用类来控制显隐 */
+    align-items: center; justify-content: center;
+    z-index: 10000;
+  }
+  .hidden { display: none !important; }   /* 默认隐藏，避免被其它样式覆盖 */
+
+  .ad-modal {
+    position: relative;
+    max-width: 90vw; max-height: 80vh;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px #000a;
+    animation: popIn .35s ease;
+    background: #111;
+  }
+  .ad-modal img {
+    width: 100%; height: auto; display:block;
+    background: #111;
+  }
+  .ad-close {
+    position: absolute; top: 6px; right: 6px;
+    background: rgba(0,0,0,0.6); color: #fff;
+    border: none; border-radius: 50%;
+    width: 32px; height: 32px;
+    font-size: 20px; font-weight: bold;
+    cursor: pointer; line-height: 30px;
+  }
+  .ad-close:hover { background: rgba(0,0,0,0.85); }
+  @keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);     opacity: 1; }
+  }
+</style>
+
+<script>
+  // 关闭（用 class 隐藏，最稳）
+  window.closeAd = function () {
+    const modal = document.getElementById('adModal');
+    if (modal) modal.classList.add('hidden');
+  };
+
+  // 绑定背景与按钮点击；Esc 也可关闭
+  (function () {
+    const modal = document.getElementById('adModal');
+    if (!modal) return;
+
+    // 点击黑色背景时关闭（必须点到背景本身）
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) window.closeAd();
+    });
+
+    const btn = modal.querySelector('.ad-close');
+    if (btn) btn.addEventListener('click', window.closeAd);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') window.closeAd();
+    });
+  })();
+
+  fetch(AD_URL_AD)
+    .then(res => res.json())
+    .then(rows => {
+      if (!rows || !rows.length) return;
+      const r = rows[0] || {};
+      const enabled = String(r.enabled || '').trim().toLowerCase() === 'yes';
+      const adImg = (r.img || '').trim();
+      if (!enabled || !adImg) return;
+
+      const modal = document.getElementById('adModal');
+      const imgEl = document.getElementById('adImg');
+      if (!modal || !imgEl) return;
+
+      imgEl.src = adImg;
+      modal.classList.remove('hidden');  // 显示弹窗
+    })
+    .catch(err => console.error('广告加载失败:', err));
+</script>
+<!-- 🔼 广告弹窗 🔼 -->
 </body>
 </html>
+
